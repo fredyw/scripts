@@ -25,7 +25,7 @@ sudo apt -y install \
   libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
-yes | "${HOME}"/.fzf/install
+"${HOME}"/.fzf/install
 
 # Create directories.
 mkdir -p "${APPS}"
@@ -62,6 +62,7 @@ ln -s "${DOT_FILES}"/vim/.vimrc "${HOME}"/.vimrc
 ln -s "${DOT_FILES}"/tmux/.tmux.conf "${HOME}"/.tmux.conf
 
 # Install Vundle plugins.
+git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}"/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
 
 # Install YouCompleteMe.

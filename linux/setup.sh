@@ -15,10 +15,12 @@ sudo apt update
 sudo apt dist-upgrade
 sudo apt install \
   build-essential \
+  tmux \
   cmake \
   unzip \
   clang \
   ripgrep \
+  htop \
   libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf

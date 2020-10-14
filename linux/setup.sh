@@ -41,7 +41,7 @@ git config --global pull.rebase true
 
 # Set up dot files.
 git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
-echo -n 'source ~/.mybashrc.sh' >>"${HOME}/.bashrc"
+echo -n 'source ~/data/github/dotfiles/bash/bashrc' >>"${HOME}/.bashrc"
 echo -n 'source ~/.mybashrc.sh' >>"${HOME}/.bashrc"
 cat >>"${MY_BASHRC}" <<EOL
 export DATA="\$HOME/data"

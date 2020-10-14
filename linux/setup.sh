@@ -7,13 +7,14 @@ set -euxo pipefail
 DATA="${HOME}"/data
 APPS="${DATA}"/apps
 GITHUB="${DATA}"/github
+DOT_FILES="${GITHUB}"/dotfiles
 MY_BASHRC="${HOME}"/.mybashrc.sh
 TMP="${HOME}"/tmp
 
 # Software installation.
 sudo apt update
-sudo apt dist-upgrade
-sudo apt install \
+sudo apt -y dist-upgrade
+sudo apt -y install \
   build-essential \
   tmux \
   cmake \
@@ -24,7 +25,7 @@ sudo apt install \
   libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
-"${HOME}"/.fzf/install
+yes | "${HOME}"/.fzf/install
 
 # Create directories.
 mkdir -p "${APPS}"
@@ -39,11 +40,12 @@ git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(ye
 git config --global pull.rebase true
 
 # Set up dot files.
-git clone git@github.com:fredyw/dotfiles.git "${GITHUB}"
+git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
+echo -n 'source ~/.mybashrc.sh' >>"${HOME}/.bashrc"
 echo -n 'source ~/.mybashrc.sh' >>"${HOME}/.bashrc"
 cat >>"${MY_BASHRC}" <<EOL
-export DATA=\$HOME/data
-export APPS=\$HOME/data/apps
+export DATA="\$HOME/data"
+export APPS="\$HOME/data/apps"
 
 alias vbash="vim \$HOME/.mybashrc.sh"
 alias sbash="source \$HOME/.bashrc"
@@ -56,8 +58,8 @@ alias cdvim="cd \$HOME/.vim"
 EOL
 
 # Set up symbolic links.
-ln -s "${GITHUB}"/vim/.vimrc "${HOME}"/.vimrc
-ln -s "${GITHUB}"/tmux/.tmux.conf "${HOME}"/.tmux.conf
+ln -s "${DOT_FILES}"/vim/.vimrc "${HOME}"/.vimrc
+ln -s "${DOT_FILES}"/tmux/.tmux.conf "${HOME}"/.tmux.conf
 
 # Install Vundle plugins.
 vim +PluginInstall +qall

@@ -67,3 +67,9 @@ vim +PluginInstall +qall
 
 # Install YouCompleteMe.
 "${HOME}"/.vim/bundle/YouCompleteMe/install.py
+
+# Install SDKMAN
+curl -s "https://get.sdkman.io" | bash
+
+# Install Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

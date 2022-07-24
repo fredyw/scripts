@@ -22,6 +22,8 @@ sudo apt -y install \
   clang \
   ripgrep \
   htop \
+  zip \
+  unzip \
   libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf

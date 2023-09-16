@@ -4,9 +4,7 @@ set -euxo pipefail
 
 # This script should work on on any Ubuntu-derived distros.
 
-DATA="${HOME}"/data
-APPS="${DATA}"/apps
-GITHUB="${DATA}"/github
+GITHUB="${HOME}"/github
 DOT_FILES="${GITHUB}"/dotfiles
 MY_BASHRC="${HOME}"/.mybashrc.sh
 TMP="${HOME}"/tmp
@@ -30,7 +28,6 @@ git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
 "${HOME}"/.fzf/install
 
 # Create directories.
-mkdir -p "${APPS}"
 mkdir -p "${GITHUB}"
 mkdir -p "${TMP}"
 
@@ -40,21 +37,17 @@ git config --global user.email "fredy.wijaya@gmail.com"
 git config --global alias.tree "log --decorate --graph"
 git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
 git config --global pull.rebase true
+git config --global init.defaultBranch main
 
 # Set up dot files.
 git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
-echo 'source ~/data/github/dotfiles/bash/bashrc' >> "${HOME}/.bashrc"
+echo 'source ~/github/dotfiles/bash/bashrc' >> "${HOME}/.bashrc"
 echo 'source ~/.mybashrc.sh' >> "${HOME}/.bashrc"
 cat >> "${MY_BASHRC}" <<EOL
-export DATA="\$HOME/data"
-export APPS="\$HOME/data/apps"
-
 alias vbash="vim \$HOME/.mybashrc.sh"
 alias sbash="source \$HOME/.bashrc"
-alias cddata="cd \$DATA"
-alias cdapps="cd \$APPS"
-alias cdgithub="cd \$DATA/github"
-alias cddotfiles="cd \$DATA/github/dotfiles"
+alias cdgithub="cd \$HOME/github"
+alias cddotfiles="cd \$HOME/github/dotfiles"
 alias cdtmp="cd \$HOME/tmp"
 alias cdvim="cd \$HOME/.vim"
 EOL

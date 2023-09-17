@@ -22,6 +22,7 @@ sudo apt -y install \
   htop \
   zip \
   unzip \
+  tree \
   libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf

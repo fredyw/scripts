@@ -16,9 +16,9 @@ function install_bazel {
   curl -L "${BUILDIFIER_URL}" --output "${BAZEL_DIR}"/buildifier
   chmod +x "${BAZEL_DIR}"/buildifier
 
-  BULDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buldozer-linux-amd64")) | .browser_download_url')
-  curl -L "${BULDOZER_URL}" --output "${BAZEL_DIR}"/buldozer
-  chmod +x "${BAZEL_DIR}"/buldozer
+  BUILDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildozer-linux-amd64")) | .browser_download_url')
+  curl -L "${BULDOZER_URL}" --output "${BAZEL_DIR}"/buildozer
+  chmod +x "${BAZEL_DIR}"/buildozer
 }
 
 function install_jetbrains_toolbox {
@@ -30,7 +30,6 @@ function install_jetbrains_toolbox {
   mkdir -p "${TOOLBOX_DIR}"
   tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}/toolbox.tar.gz" --strip-components=1
 }
-
 
 GITHUB="${HOME}"/github
 PROJECTS="${HOME}"/projects

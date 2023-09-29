@@ -4,6 +4,14 @@ set -euxo pipefail
 
 # This script should work on on any Ubuntu-derived distros.
 
+function install_go {
+  GO_VERSION=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[0].version')
+  DOWNLOAD_TEMP_DIR=$(mktemp -d)
+  mkdir -p "${DOWNLOAD_TEMP_DIR}"
+  curl -L https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz --output "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
+  tar -C "${HOME}" -xf "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
+}
+
 function install_bazel {
   BAZEL_DIR="${HOME}"/bazel
   mkdir -p "${BAZEL_DIR}"
@@ -25,10 +33,10 @@ function install_jetbrains_toolbox {
   URL=$(curl -s 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' | jq -r '.TBA[0].downloads.linux.link')
   DOWNLOAD_TEMP_DIR=$(mktemp -d)
   mkdir -p "${DOWNLOAD_TEMP_DIR}"
-  curl -L "${URL}" --output "${DOWNLOAD_TEMP_DIR}/jetbrains-toolbox.tar.gz"
+  curl -L "${URL}" --output "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz
   TOOLBOX_DIR="${HOME}"/jetbrains-toolbox
   mkdir -p "${TOOLBOX_DIR}"
-  tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}/jetbrains-toolbox.tar.gz" --strip-components=1
+  tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz --strip-components=1
 }
 
 GITHUB="${HOME}"/github
@@ -92,6 +100,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Copy fonts.
 cp -rf .fonts "${HOME}"
+
+# Install Go.
+install_go
 
 # Install Bazel.
 install_bazel

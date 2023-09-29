@@ -5,38 +5,38 @@ set -euxo pipefail
 # This script should work on on any Ubuntu-derived distros.
 
 function install_go {
-  GO_VERSION=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[0].version')
-  DOWNLOAD_TEMP_DIR=$(mktemp -d)
-  mkdir -p "${DOWNLOAD_TEMP_DIR}"
-  curl -L https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz --output "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
-  tar -C "${HOME}" -xf "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
+    GO_VERSION=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[0].version')
+    DOWNLOAD_TEMP_DIR=$(mktemp -d)
+    mkdir -p "${DOWNLOAD_TEMP_DIR}"
+    curl -L https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz --output "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
+    tar -C "${HOME}" -xf "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
 }
 
 function install_bazel {
-  BAZEL_DIR="${HOME}"/bazel
-  mkdir -p "${BAZEL_DIR}"
+    BAZEL_DIR="${HOME}"/bazel
+    mkdir -p "${BAZEL_DIR}"
 
-  BAZELISK_URL=$(curl -s https://api.github.com/repos/bazelbuild/bazelisk/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("linux-amd64")) | .browser_download_url')
-  curl -L "${BAZELISK_URL}" --output "${BAZEL_DIR}"/bazel
-  chmod +x "${BAZEL_DIR}"/bazel
+    BAZELISK_URL=$(curl -s https://api.github.com/repos/bazelbuild/bazelisk/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("linux-amd64")) | .browser_download_url')
+    curl -L "${BAZELISK_URL}" --output "${BAZEL_DIR}"/bazel
+    chmod +x "${BAZEL_DIR}"/bazel
 
-  BUILDIFIER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildifier-linux-amd64")) | .browser_download_url')
-  curl -L "${BUILDIFIER_URL}" --output "${BAZEL_DIR}"/buildifier
-  chmod +x "${BAZEL_DIR}"/buildifier
+    BUILDIFIER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildifier-linux-amd64")) | .browser_download_url')
+    curl -L "${BUILDIFIER_URL}" --output "${BAZEL_DIR}"/buildifier
+    chmod +x "${BAZEL_DIR}"/buildifier
 
-  BUILDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildozer-linux-amd64")) | .browser_download_url')
-  curl -L "${BUILDOZER_URL}" --output "${BAZEL_DIR}"/buildozer
-  chmod +x "${BAZEL_DIR}"/buildozer
+    BUILDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildozer-linux-amd64")) | .browser_download_url')
+    curl -L "${BUILDOZER_URL}" --output "${BAZEL_DIR}"/buildozer
+    chmod +x "${BAZEL_DIR}"/buildozer
 }
 
 function install_jetbrains_toolbox {
-  URL=$(curl -s 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' | jq -r '.TBA[0].downloads.linux.link')
-  DOWNLOAD_TEMP_DIR=$(mktemp -d)
-  mkdir -p "${DOWNLOAD_TEMP_DIR}"
-  curl -L "${URL}" --output "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz
-  TOOLBOX_DIR="${HOME}"/jetbrains-toolbox
-  mkdir -p "${TOOLBOX_DIR}"
-  tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz --strip-components=1
+    URL=$(curl -s 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' | jq -r '.TBA[0].downloads.linux.link')
+    DOWNLOAD_TEMP_DIR=$(mktemp -d)
+    mkdir -p "${DOWNLOAD_TEMP_DIR}"
+    curl -L "${URL}" --output "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz
+    TOOLBOX_DIR="${HOME}"/jetbrains-toolbox
+    mkdir -p "${TOOLBOX_DIR}"
+    tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz --strip-components=1
 }
 
 GITHUB="${HOME}"/github
@@ -49,21 +49,21 @@ TMP="${HOME}"/tmp
 sudo apt update
 sudo apt -y dist-upgrade
 sudo apt -y install \
-  build-essential \
-  git \
-  curl \
-  vim \
-  tmux \
-  cmake \
-  unzip \
-  clang \
-  ripgrep \
-  htop \
-  zip \
-  unzip \
-  tree \
-  jq \
-  libpython3-all-dev # For YouCompleteMe
+     build-essential \
+     git \
+     curl \
+     vim \
+     tmux \
+     cmake \
+     unzip \
+     clang \
+     ripgrep \
+     htop \
+     zip \
+     unzip \
+     tree \
+     jq \
+     libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
 "${HOME}"/.fzf/install --all

@@ -17,7 +17,7 @@ function install_bazel {
   chmod +x "${BAZEL_DIR}"/buildifier
 
   BUILDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildozer-linux-amd64")) | .browser_download_url')
-  curl -L "${BULDOZER_URL}" --output "${BAZEL_DIR}"/buildozer
+  curl -L "${BUILDOZER_URL}" --output "${BAZEL_DIR}"/buildozer
   chmod +x "${BAZEL_DIR}"/buildozer
 }
 

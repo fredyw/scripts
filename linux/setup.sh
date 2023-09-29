@@ -36,15 +36,9 @@ mkdir -p "${PROJECTS}"
 
 # Set up dot files.
 git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
-echo 'source ~/github/dotfiles/bash/bashrc' >> "${HOME}/.bashrc"
-echo 'source ~/.mybashrc.sh' >> "${HOME}/.bashrc"
+echo 'source ~/.bashrc.sh' >> "${HOME}/.bashrc"
 cat >> "${BASHRC}" <<EOL
-alias vbash="vim \$HOME/.mybashrc.sh"
-alias sbash="source \$HOME/.bashrc"
-alias cdgithub="cd \$HOME/github"
-alias cddotfiles="cd \$HOME/github/dotfiles"
-alias cdtmp="cd \$HOME/tmp"
-alias cdvim="cd \$HOME/.vim"
+source \$HOME/github/dotfiles/bash/.bashrc
 EOL
 
 # Set up symbolic links.

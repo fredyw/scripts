@@ -62,6 +62,9 @@ curl -s "https://get.sdkman.io" | bash
 # Install Rust.
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+# Copy fonts.
+cp -rf .fonts "${HOME}
+
 source "${HOME}"/.bashrc
 
 # Install JVM related stuff.

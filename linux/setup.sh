@@ -5,10 +5,20 @@ set -euxo pipefail
 # This script should work on on any Ubuntu-derived distros.
 
 function install_bazel {
-  URL=$(curl -s https://api.github.com/repos/bazelbuild/bazelisk/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("linux-amd64")) | .browser_download_url')
   BAZEL_DIR="${HOME}"/bazel
   mkdir -p "${BAZEL_DIR}"
-  curl -L "${URL}" --output "${BAZEL_DIR}/bazel"
+
+  BAZELISK_URL=$(curl -s https://api.github.com/repos/bazelbuild/bazelisk/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("linux-amd64")) | .browser_download_url')
+  curl -L "${BAZELISK_URL}" --output "${BAZEL_DIR}"/bazel
+  chmod +x "${BAZEL_DIR}"/bazel
+
+  BUILDIFIER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildifier-linux-amd64")) | .browser_download_url')
+  curl -L "${BUILDIFIER_URL}" --output "${BAZEL_DIR}"/buildifier
+  chmod +x "${BAZEL_DIR}"/buildifier
+
+  BULDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buldozer-linux-amd64")) | .browser_download_url')
+  curl -L "${BULDOZER_URL}" --output "${BAZEL_DIR}"/buldozer
+  chmod +x "${BAZEL_DIR}"/buldozer
 }
 
 function install_jetbrains_toolbox {

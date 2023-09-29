@@ -66,6 +66,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Copy fonts.
 cp -rf .fonts "${HOME}"
 
+# Install JetBrains Toolbox.
+install_jetbrains_toolbox
+
 source "${HOME}"/.bashrc
 
 # Install JVM related stuff.
@@ -73,3 +76,13 @@ sdk install java
 sdk install kotlin
 sdk install maven
 sdk install gradle
+
+function install_jetbrains_toolbox {
+  URL=$(curl -s 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' | jq -r '.TBA[0].downloads.linux.link')
+  DOWNLOAD_TEMP_DIR=$(mktemp -d)
+  mkdir -p "${DOWNLOAD_TEMP_DIR}"
+  curl -L "${URL}" --output "${DOWNLOAD_TEMP_DIR}/toolbox.tar.gz"
+  TOOLBOX_DIR="${HOME}"/jetbrains-toolbox
+  mkdir -p "${TOOLBOX_DIR}"
+  tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}/toolbox.tar.gz" --strip-components=1
+}

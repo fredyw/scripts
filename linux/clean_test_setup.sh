@@ -2,6 +2,6 @@
 
 set -euxo pipefail
 
-docker container prune
-docker image prune
+yes | docker container prune
+yes | docker image prune
 docker rmi test-setup

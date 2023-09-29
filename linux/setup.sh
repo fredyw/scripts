@@ -84,6 +84,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Copy fonts.
 cp -rf .fonts "${HOME}"
 
+# Install Bazel.
+install_bazel
+
 # Install JetBrains Toolbox.
 install_jetbrains_toolbox
 

@@ -5,8 +5,9 @@ set -euxo pipefail
 # This script should work on on any Ubuntu-derived distros.
 
 GITHUB="${HOME}"/github
+PROJECTS="${HOME}"/projects
 DOT_FILES="${GITHUB}"/dotfiles
-MY_BASHRC="${HOME}"/.mybashrc.sh
+BASHRC="${HOME}"/.bashrc.sh
 TMP="${HOME}"/tmp
 
 # Software installation.
@@ -31,20 +32,13 @@ git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
 # Create directories.
 mkdir -p "${GITHUB}"
 mkdir -p "${TMP}"
-
-# Set up Git.
-git config --global user.name "Fredy Wijaya"
-git config --global user.email "fredy.wijaya@gmail.com"
-git config --global alias.tree "log --decorate --graph"
-git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
-git config --global pull.rebase true
-git config --global init.defaultBranch main
+mkdir -p "${PROJECTS}"
 
 # Set up dot files.
 git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
 echo 'source ~/github/dotfiles/bash/bashrc' >> "${HOME}/.bashrc"
 echo 'source ~/.mybashrc.sh' >> "${HOME}/.bashrc"
-cat >> "${MY_BASHRC}" <<EOL
+cat >> "${BASHRC}" <<EOL
 alias vbash="vim \$HOME/.mybashrc.sh"
 alias sbash="source \$HOME/.bashrc"
 alias cdgithub="cd \$HOME/github"
@@ -56,6 +50,7 @@ EOL
 # Set up symbolic links.
 ln -s "${DOT_FILES}"/vim/.vimrc "${HOME}"/.vimrc
 ln -s "${DOT_FILES}"/tmux/.tmux.conf "${HOME}"/.tmux.conf
+ln -s "${DOT_FILES}"/git/.gitconfig "${HOME}"/.gitconfig
 
 # Install Vundle plugins.
 git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}"/.vim/bundle/Vundle.vim
@@ -64,8 +59,8 @@ vim +PluginInstall +qall
 # Install YouCompleteMe.
 "${HOME}"/.vim/bundle/YouCompleteMe/install.py
 
-# Install SDKMAN
+# Install SDKMAN.
 curl -s "https://get.sdkman.io" | bash
 
-# Install Rust
+# Install Rust.
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

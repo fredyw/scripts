@@ -4,6 +4,13 @@ set -euxo pipefail
 
 # This script should work on on any Ubuntu-derived distros.
 
+function install_bazel {
+  URL=$(curl -s https://api.github.com/repos/bazelbuild/bazelisk/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("linux-amd64")) | .browser_download_url')
+  BAZEL_DIR="${HOME}"/bazel
+  mkdir -p "${BAZEL_DIR}"
+  curl -L "${URL}" --output "${BAZEL_DIR}/bazel"
+}
+
 function install_jetbrains_toolbox {
   URL=$(curl -s 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' | jq -r '.TBA[0].downloads.linux.link')
   DOWNLOAD_TEMP_DIR=$(mktemp -d)
@@ -13,6 +20,7 @@ function install_jetbrains_toolbox {
   mkdir -p "${TOOLBOX_DIR}"
   tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}/toolbox.tar.gz" --strip-components=1
 }
+
 
 GITHUB="${HOME}"/github
 PROJECTS="${HOME}"/projects

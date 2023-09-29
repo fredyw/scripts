@@ -15,6 +15,9 @@ sudo apt update
 sudo apt -y dist-upgrade
 sudo apt -y install \
   build-essential \
+  git \
+  curl \
+  vim \
   tmux \
   cmake \
   unzip \
@@ -27,7 +30,7 @@ sudo apt -y install \
   libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
-"${HOME}"/.fzf/install
+"${HOME}"/.fzf/install --all
 
 # Create directories.
 mkdir -p "${GITHUB}"
@@ -57,4 +60,12 @@ vim +PluginInstall +qall
 curl -s "https://get.sdkman.io" | bash
 
 # Install Rust.
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+source "${HOME}"/.bashrc
+
+# Install JVM related stuff.
+sdk install java
+sdk install kotlin
+sdk install maven
+sdk install gradle

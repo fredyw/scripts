@@ -63,7 +63,7 @@ curl -s "https://get.sdkman.io" | bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Copy fonts.
-cp -rf .fonts "${HOME}
+cp -rf .fonts "${HOME}"
 
 source "${HOME}"/.bashrc
 

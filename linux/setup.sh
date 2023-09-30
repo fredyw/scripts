@@ -30,7 +30,7 @@ while true; do
     shift
 done
 
-set -eo pipefail
+set -exo pipefail
 
 function install_go {
     GO_VERSION=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[0].version')

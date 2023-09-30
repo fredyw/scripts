@@ -106,6 +106,7 @@ sudo apt -y install \
      apt-transport-https \
      libpython3-all-dev # For YouCompleteMe
 
+# Install fzf.
 if [[ ! -d "${HOME}"/.fzf ]]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
     "${HOME}"/.fzf/install --all
@@ -141,11 +142,13 @@ fi
 ln -s "${DOT_FILES}"/git/.gitconfig "${HOME}"/.gitconfig
 
 # Install Vundle plugins.
-git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}"/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
+if [[ ! -d "${HOME}"/.vim/bundle/Vundle.vim ]]; then
+    git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}"/.vim/bundle/Vundle.vim
+    vim +PluginInstall +qall
 
-# Install YouCompleteMe.
-"${HOME}"/.vim/bundle/YouCompleteMe/install.py
+    # Install YouCompleteMe.
+    "${HOME}"/.vim/bundle/YouCompleteMe/install.py
+fi
 
 # Install SDKMAN.
 curl -s "https://get.sdkman.io" | bash

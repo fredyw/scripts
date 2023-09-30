@@ -52,6 +52,8 @@ sudo apt -y install \
      build-essential \
      git \
      curl \
+     wget \
+     gpg \
      vim \
      tmux \
      cmake \

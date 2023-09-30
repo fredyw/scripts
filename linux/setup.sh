@@ -46,7 +46,7 @@ function install_vs_code {
     sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
     rm -f packages.microsoft.gpg
     sudo apt update
-    sudo apt install code
+    sudo apt -y install code
 }
 
 GITHUB="${HOME}"/github

@@ -117,7 +117,7 @@ mkdir -p "${TMP}"
 mkdir -p "${PROJECTS}"
 
 # Set up dot files.
-HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/.bashrc.sh")
+HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/.bashrc.sh" || true)
 if [[ -z "${HAS_BASHRC_SH}" ]]; then
     git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
     echo 'source ~/.bashrc.sh' >> "${HOME}/.bashrc"

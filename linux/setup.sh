@@ -39,6 +39,16 @@ function install_jetbrains_toolbox {
     tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz --strip-components=1
 }
 
+function install_vs_code {
+    sudo apt-get install wget gpg
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+    rm -f packages.microsoft.gpg
+    sudo apt update
+    sudo apt install code
+}
+
 GITHUB="${HOME}"/github
 PROJECTS="${HOME}"/projects
 DOT_FILES="${GITHUB}"/dotfiles
@@ -65,6 +75,7 @@ sudo apt -y install \
      unzip \
      tree \
      jq \
+     apt-transport-https \
      libpython3-all-dev # For YouCompleteMe
 
 git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
@@ -111,6 +122,9 @@ install_bazel
 
 # Install JetBrains Toolbox.
 install_jetbrains_toolbox
+
+# Install Visual Studio Code.
+install_vs_code
 
 source "${HOME}"/.sdkman/bin/sdkman-init.sh
 

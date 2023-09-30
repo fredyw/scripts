@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -exo pipefail
 
 # This script should work on on any Ubuntu-derived distros.
 
@@ -110,7 +110,7 @@ install_bazel
 # Install JetBrains Toolbox.
 install_jetbrains_toolbox
 
-source "${HOME}"/.bashrc
+source "${HOME}"/.sdkman/bin/sdkman-init.sh
 
 # Install JVM related stuff.
 sdk install java

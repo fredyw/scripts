@@ -1,8 +1,36 @@
 #!/bin/bash
 
-set -exo pipefail
-
 # This script should work on on any Ubuntu-derived distros.
+
+function show_help {
+    echo "Bootstrap Linux environment."
+    echo
+    echo "Options:"
+    echo "  -h|--help       Show this help."
+    echo "  -n|--no-gui     Do not install anything GUI related."
+    exit 0
+}
+
+OPTIONS=$(getopt -o hn --long help,no-gui -- "$@")
+eval set -- "${OPTIONS}"
+NO_GUI=false
+while true; do
+    case "$1" in
+        -h|--help)
+            show_help
+            ;;
+        -n|--no-gui)
+            NO_GUI=true
+            ;;
+        --)
+            shift
+            break
+            ;;
+    esac
+    shift
+done
+
+set -eo pipefail
 
 function install_go {
     GO_VERSION=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[0].version')
@@ -111,20 +139,11 @@ curl -s "https://get.sdkman.io" | bash
 # Install Rust.
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-# Copy fonts.
-cp -rf .fonts "${HOME}"
-
 # Install Go.
 install_go
 
 # Install Bazel.
 install_bazel
-
-# Install JetBrains Toolbox.
-install_jetbrains_toolbox
-
-# Install Visual Studio Code.
-install_vs_code
 
 source "${HOME}"/.sdkman/bin/sdkman-init.sh
 
@@ -133,3 +152,14 @@ sdk install java
 sdk install kotlin
 sdk install maven
 sdk install gradle
+
+if [[ "${NO_GUI}" = false ]]; then
+    # Copy fonts.
+    cp -rf .fonts "${HOME}"
+
+    # Install JetBrains Toolbox.
+    install_jetbrains_toolbox
+
+    # Install Visual Studio Code.
+    install_vs_code
+fi

@@ -106,8 +106,10 @@ sudo apt -y install \
      apt-transport-https \
      libpython3-all-dev # For YouCompleteMe
 
-git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
-"${HOME}"/.fzf/install --all
+if [[ ! -d "${HOME}"/.fzf ]]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
+    "${HOME}"/.fzf/install --all
+fi
 
 # Create directories.
 mkdir -p "${GITHUB}"
@@ -115,15 +117,27 @@ mkdir -p "${TMP}"
 mkdir -p "${PROJECTS}"
 
 # Set up dot files.
-git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
-echo 'source ~/.bashrc.sh' >> "${HOME}/.bashrc"
-cat >> "${BASHRC}" <<EOL
-source \$HOME/github/dotfiles/bash/.bashrc
+HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/.bashrc.sh")
+if [[ -z "${HAS_BASHRC_SH}" ]]; then
+    git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
+    echo 'source ~/.bashrc.sh' >> "${HOME}/.bashrc"
+    cat >> "${BASHRC}" <<EOL
+    source \$HOME/github/dotfiles/bash/.bashrc
 EOL
+fi
 
 # Set up symbolic links.
+if [[ -f "${HOME}"/.vimrc ]]; then
+    rm -f "${HOME}"/.vimrc
+fi
 ln -s "${DOT_FILES}"/vim/.vimrc "${HOME}"/.vimrc
+if [[ -f "${HOME}"/.tmux.conf ]]; then
+    rm -f "${HOME}"/.tmux.conf
+fi
 ln -s "${DOT_FILES}"/tmux/.tmux.conf "${HOME}"/.tmux.conf
+if [[ -f "${HOME}"/.gitconfig ]]; then
+    rm -f "${HOME}"/.gitconfig
+fi
 ln -s "${DOT_FILES}"/git/.gitconfig "${HOME}"/.gitconfig
 
 # Install Vundle plugins.

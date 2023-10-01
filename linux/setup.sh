@@ -99,6 +99,7 @@ sudo apt -y install \
      clang \
      ripgrep \
      fd-find \
+     bat \
      htop \
      zip \
      unzip \
@@ -144,6 +145,9 @@ fi
 ln -s "${DOT_FILES}"/git/.gitconfig "${HOME}"/.gitconfig
 if [[ ! -f "${HOME}"/.local/bin/fd ]]; then
     ln -s $(which fdfind) "${HOME}"/.local/bin/fd
+fi
+if [[ ! -f "${HOME}"/.local/bin/bat ]]; then
+    ln -s $(which batcat) "${HOME}"/.local/bin/bat
 fi
 
 # Install Vundle plugins.

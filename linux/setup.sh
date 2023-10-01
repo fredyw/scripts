@@ -98,6 +98,7 @@ sudo apt -y install \
      unzip \
      clang \
      ripgrep \
+     fd-find \
      htop \
      zip \
      unzip \

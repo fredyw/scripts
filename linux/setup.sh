@@ -117,6 +117,7 @@ fi
 mkdir -p "${GITHUB}"
 mkdir -p "${TMP}"
 mkdir -p "${PROJECTS}"
+mkdir -p "${HOME}"/.local/bin
 
 # Set up dot files.
 HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/.bashrc.sh" || true)
@@ -141,6 +142,9 @@ if [[ -f "${HOME}"/.gitconfig ]]; then
     rm -f "${HOME}"/.gitconfig
 fi
 ln -s "${DOT_FILES}"/git/.gitconfig "${HOME}"/.gitconfig
+if [[ ! -f "${HOME}"/.local/bin/fd ]]; then
+    ln -s $(which fdfind) "${HOME}"/.local/bin/fd
+fi
 
 # Install Vundle plugins.
 if [[ ! -d "${HOME}"/.vim/bundle/Vundle.vim ]]; then

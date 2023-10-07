@@ -77,6 +77,25 @@ function install_vs_code {
     sudo apt -y install code
 }
 
+function install_docker {
+    sudo apt-get install ca-certificates curl gnupg
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+    echo \
+        "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install \
+        docker-ce \
+        docker-ce-cli \
+        containerd.io \
+        docker-buildx-plugin \
+        docker-compose-plugin
+    sudo usermod -aG docker fredyw
+}
+
 GITHUB="${HOME}"/github
 PROJECTS="${HOME}"/projects
 DOT_FILES="${GITHUB}"/dotfiles
@@ -170,6 +189,9 @@ install_go
 
 # Install Bazel.
 install_bazel
+
+# Install Docker
+install_docker
 
 source "${HOME}"/.sdkman/bin/sdkman-init.sh
 

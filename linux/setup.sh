@@ -111,7 +111,6 @@ install_nvim() {
         mkdir -p "${HOME}"/.nvim
         tar xzf nvim-linux-x86_64.tar.gz --strip-components=1 -C "${HOME}"/.nvim
         mkdir -p "${HOME}/.local/bin"
-        ln -s "${HOME}"/.nvim/bin/nvim "${HOME}"/.local/bin/nvim
         rm -f nvim-linux-x86_64.tar.gz
 
         # Install lazyvim.

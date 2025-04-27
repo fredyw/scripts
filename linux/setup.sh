@@ -44,6 +44,7 @@ install_go() {
     DOWNLOAD_TEMP_DIR=$(mktemp -d)
     mkdir -p "${DOWNLOAD_TEMP_DIR}"
     curl -L https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz --output "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
+    mkdir -p "${HOME}/.go"
     tar -C "${HOME}/.go" -xf "${DOWNLOAD_TEMP_DIR}"/go.tar.gz --strip-components=1 
 }
 

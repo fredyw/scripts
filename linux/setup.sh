@@ -2,7 +2,7 @@
 
 # This script should work on on any Ubuntu-derived distros.
 
-function show_help {
+show_help() {
     echo "Bootstrap Linux environment."
     echo
     echo "Options:"
@@ -32,7 +32,14 @@ done
 
 set -exo pipefail
 
-function install_go {
+install_fzf() {
+    if [[ ! -d "${HOME}"/.fzf ]]; then
+        git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
+        "${HOME}"/.fzf/install --all
+    fi
+}
+
+install_go() {
     GO_VERSION=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[0].version')
     DOWNLOAD_TEMP_DIR=$(mktemp -d)
     mkdir -p "${DOWNLOAD_TEMP_DIR}"
@@ -40,9 +47,7 @@ function install_go {
     tar -C "${HOME}" -xf "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
 }
 
-function install_bazel {
-    mkdir -p "${HOME}/.local/bin"
-
+install_bazel() {
     BAZEL_DIR="${HOME}"/.bazel
     mkdir -p "${BAZEL_DIR}"
 
@@ -62,7 +67,7 @@ function install_bazel {
     ln -s "${BAZEL_DIR}"/buildozer "${HOME}"/.local/bin/buildozer
 }
 
-function install_jetbrains_toolbox {
+install_jetbrains_toolbox() {
     URL=$(curl -s 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' | jq -r '.TBA[0].downloads.linux.link')
     DOWNLOAD_TEMP_DIR=$(mktemp -d)
     mkdir -p "${DOWNLOAD_TEMP_DIR}"
@@ -72,7 +77,7 @@ function install_jetbrains_toolbox {
     tar -C "${TOOLBOX_DIR}" -xf "${DOWNLOAD_TEMP_DIR}"/jetbrains-toolbox.tar.gz --strip-components=1
 }
 
-function install_vs_code {
+install_vs_code() {
     sudo apt -y install wget gpg
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
@@ -82,7 +87,7 @@ function install_vs_code {
     sudo apt -y install code
 }
 
-function install_docker {
+install_docker() {
     sudo apt -y install ca-certificates curl gnupg
     sudo install -m 0755 -d /etc/apt/keyrings
     DISTRO=$(cat /etc/os-release | grep -e ^ID= | cut -d'=' -f2)
@@ -100,6 +105,37 @@ function install_docker {
         docker-buildx-plugin \
         docker-compose-plugin
     sudo usermod -aG docker fredyw
+}
+
+install_nvm() {
+    if [[ ! -d "${HOME}"/.nvim ]]; then
+        curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+        mkdir -p "${HOME}"/.nvim
+        tar xzf nvim-linux-x86_64.tar.gz --strip-components=1 -C "${HOME}"/.nvim
+        mkdir -p "${HOME}/.local/bin"
+        ln -s "${HOME}"/.nvim/bin/nvim "${HOME}"/.local/bin/nvim
+        rm -f nvim-linux-x86_64.tar.gz
+
+        # Install lazyvim.
+        git clone https://github.com/LazyVim/starter ~/.config/nvim
+    fi
+}
+
+install_sdkman() {
+    # Install SDKMAN.
+    curl -s "https://get.sdkman.io" | bash
+
+    source "${HOME}"/.sdkman/bin/sdkman-init.sh
+
+    # Install JVM related stuff.
+    sdk install java
+    sdk install kotlin
+    sdk install maven
+    sdk install gradle
+}
+
+install_rust() {
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 }
 
 GITHUB="${HOME}"/github
@@ -133,10 +169,7 @@ sudo apt -y install \
      libpython3-all-dev # For YouCompleteMe
 
 # Install fzf.
-if [[ ! -d "${HOME}"/.fzf ]]; then
-    git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}"/.fzf
-    "${HOME}"/.fzf/install --all
-fi
+install_fzf
 
 # Create directories.
 mkdir -p "${GITHUB}"
@@ -184,23 +217,13 @@ fi
 # fi
 
 # Install neovim.
-if [[ ! -d "${HOME}"/.nvim ]]; then
-  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-  mkdir -p "${HOME}"/.nvim
-  tar xzf nvim-linux-x86_64.tar.gz --strip-components=1 -C "${HOME}"/.nvim
-  mkdir -p "${HOME}/.local/bin"
-  ln -s "${HOME}"/.nvim/bin/nvim "${HOME}"/.local/bin/nvim
-  rm -f nvim-linux-x86_64.tar.gz
-
-  # Install lazyvim.
-  git clone https://github.com/LazyVim/starter ~/.config/nvim
-fi
+install_nvim
 
 # Install SDKMAN.
-curl -s "https://get.sdkman.io" | bash
+install_sdkman
 
 # Install Rust.
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+install_rust
 
 # Install Go.
 install_go
@@ -210,14 +233,6 @@ install_bazel
 
 # Install Docker
 install_docker
-
-source "${HOME}"/.sdkman/bin/sdkman-init.sh
-
-# Install JVM related stuff.
-sdk install java
-sdk install kotlin
-sdk install maven
-sdk install gradle
 
 if [[ "${NO_GUI}" = false ]]; then
     # Copy fonts.

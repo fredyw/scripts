@@ -41,20 +41,25 @@ function install_go {
 }
 
 function install_bazel {
-    BAZEL_DIR="${HOME}"/bazel
+    mkdir -p "${HOME}/.local/bin"
+
+    BAZEL_DIR="${HOME}"/.bazel
     mkdir -p "${BAZEL_DIR}"
 
     BAZELISK_URL=$(curl -s https://api.github.com/repos/bazelbuild/bazelisk/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("linux-amd64")) | .browser_download_url')
     curl -L "${BAZELISK_URL}" --output "${BAZEL_DIR}"/bazel
     chmod +x "${BAZEL_DIR}"/bazel
+    ln -s "${BAZEL_DIR}"/bazel "${HOME}"/.local/bin/bazel
 
     BUILDIFIER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildifier-linux-amd64")) | .browser_download_url')
     curl -L "${BUILDIFIER_URL}" --output "${BAZEL_DIR}"/buildifier
     chmod +x "${BAZEL_DIR}"/buildifier
+    ln -s "${BAZEL_DIR}"/buildifier "${HOME}"/.local/bin/buildifier
 
     BUILDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildozer-linux-amd64")) | .browser_download_url')
     curl -L "${BUILDOZER_URL}" --output "${BAZEL_DIR}"/buildozer
     chmod +x "${BAZEL_DIR}"/buildozer
+    ln -s "${BAZEL_DIR}"/buildozer "${HOME}"/.local/bin/buildozer
 }
 
 function install_jetbrains_toolbox {
@@ -100,7 +105,6 @@ function install_docker {
 GITHUB="${HOME}"/github
 PROJECTS="${HOME}"/projects
 DOT_FILES="${GITHUB}"/dotfiles
-BASHRC="${HOME}"/.bashrc.sh
 TMP="${HOME}"/tmp
 
 # Software installation.
@@ -141,11 +145,11 @@ mkdir -p "${PROJECTS}"
 mkdir -p "${HOME}"/.local/bin
 
 # Set up dot files.
-HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/github/bash/.bashrc" || true)
+HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/github/dotfiles/bash/.bashrc" || true)
 if [[ -z "${HAS_BASHRC_SH}" ]]; then
     git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
     echo "source ~/github/bash/.bashrc" >> "${HOME}/.bashrc"
-    cat >> "${BASHRC}" <<EOL
+    cat >> "~/.bashrc" <<EOL
     source \$HOME/github/dotfiles/bash/.bashrc
 EOL
 fi

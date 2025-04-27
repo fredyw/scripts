@@ -107,7 +107,7 @@ install_docker() {
     sudo usermod -aG docker fredyw
 }
 
-install_nvm() {
+install_nvim() {
     if [[ ! -d "${HOME}"/.nvim ]]; then
         curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
         mkdir -p "${HOME}"/.nvim
@@ -182,9 +182,6 @@ HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/github/dotfiles/bash/.bas
 if [[ -z "${HAS_BASHRC_SH}" ]]; then
     git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
     echo "source ~/github/bash/.bashrc" >> "${HOME}/.bashrc"
-    cat >> ~/.bashrc <<EOL
-    source \$HOME/github/dotfiles/bash/.bashrc
-EOL
 fi
 
 # Set up symbolic links.

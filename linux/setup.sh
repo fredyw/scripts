@@ -182,7 +182,7 @@ HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/github/dotfiles/bash/.bas
 if [[ -z "${HAS_BASHRC_SH}" ]]; then
     git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
     echo "source ~/github/bash/.bashrc" >> "${HOME}/.bashrc"
-    cat >> "~/.bashrc" <<EOL
+    cat >> ~/.bashrc <<EOL
     source \$HOME/github/dotfiles/bash/.bashrc
 EOL
 fi

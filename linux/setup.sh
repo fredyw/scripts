@@ -44,7 +44,7 @@ install_go() {
     DOWNLOAD_TEMP_DIR=$(mktemp -d)
     mkdir -p "${DOWNLOAD_TEMP_DIR}"
     curl -L https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz --output "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
-    tar -C "${HOME}" -xf "${DOWNLOAD_TEMP_DIR}"/go.tar.gz
+    tar -C "${HOME}/.go" -xf "${DOWNLOAD_TEMP_DIR}"/go.tar.gz --strip-components=1 
 }
 
 install_bazel() {
@@ -189,6 +189,7 @@ if [[ -f "${HOME}"/.vimrc ]]; then
     rm -f "${HOME}"/.vimrc
 fi
 ln -s "${DOT_FILES}"/vim/.vimrc "${HOME}"/.vimrc
+
 if [[ -f "${HOME}"/.tmux.conf ]]; then
     rm -f "${HOME}"/.tmux.conf
 fi

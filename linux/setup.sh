@@ -178,10 +178,10 @@ mkdir -p "${PROJECTS}"
 mkdir -p "${HOME}"/.local/bin
 
 # Set up dot files.
-HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/github/dotfiles/bash/.bashrc" || true)
-if [[ -z "${HAS_BASHRC_SH}" ]]; then
+HAS_GITHUB_BASHRC=$(cat "${HOME}"/.bashrc | grep "source ~/github/dotfiles/bash/.bashrc" || true)
+if [[ -z "${HAS_GITHUB_BASHRC}" ]]; then
     git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
-    echo "source ~/github/bash/.bashrc" >> "${HOME}/.bashrc"
+    echo "source ~/github/dotfiles/bash/.bashrc" >> "${HOME}/.bashrc"
 fi
 
 # Set up symbolic links.

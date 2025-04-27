@@ -55,17 +55,14 @@ install_bazel() {
     BAZELISK_URL=$(curl -s https://api.github.com/repos/bazelbuild/bazelisk/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("linux-amd64")) | .browser_download_url')
     curl -L "${BAZELISK_URL}" --output "${BAZEL_DIR}"/bazel
     chmod +x "${BAZEL_DIR}"/bazel
-    ln -s "${BAZEL_DIR}"/bazel "${HOME}"/.local/bin/bazel
 
     BUILDIFIER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildifier-linux-amd64")) | .browser_download_url')
     curl -L "${BUILDIFIER_URL}" --output "${BAZEL_DIR}"/buildifier
     chmod +x "${BAZEL_DIR}"/buildifier
-    ln -s "${BAZEL_DIR}"/buildifier "${HOME}"/.local/bin/buildifier
 
     BUILDOZER_URL=$(curl -s https://api.github.com/repos/bazelbuild/buildtools/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("buildozer-linux-amd64")) | .browser_download_url')
     curl -L "${BUILDOZER_URL}" --output "${BAZEL_DIR}"/buildozer
     chmod +x "${BAZEL_DIR}"/buildozer
-    ln -s "${BAZEL_DIR}"/buildozer "${HOME}"/.local/bin/buildozer
 }
 
 install_jetbrains_toolbox() {

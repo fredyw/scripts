@@ -141,10 +141,10 @@ mkdir -p "${PROJECTS}"
 mkdir -p "${HOME}"/.local/bin
 
 # Set up dot files.
-HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/.bashrc.sh" || true)
+HAS_BASHRC_SH=$(cat "${HOME}"/.bashrc | grep "source ~/github/bash/.bashrc" || true)
 if [[ -z "${HAS_BASHRC_SH}" ]]; then
     git clone git@github.com:fredyw/dotfiles.git "${DOT_FILES}"
-    echo 'source ~/.bashrc.sh' >> "${HOME}/.bashrc"
+    echo "source ~/github/bash/.bashrc" >> "${HOME}/.bashrc"
     cat >> "${BASHRC}" <<EOL
     source \$HOME/github/dotfiles/bash/.bashrc
 EOL
@@ -171,12 +171,25 @@ if [[ ! -f "${HOME}"/.local/bin/bat ]]; then
 fi
 
 # Install Vundle plugins.
-if [[ ! -d "${HOME}"/.vim/bundle/Vundle.vim ]]; then
-    git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}"/.vim/bundle/Vundle.vim
-    vim +PluginInstall +qall
+# if [[ ! -d "${HOME}"/.vim/bundle/Vundle.vim ]]; then
+#     git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}"/.vim/bundle/Vundle.vim
+#     vim +PluginInstall +qall
+#
+#     # Install YouCompleteMe.
+#     "${HOME}"/.vim/bundle/YouCompleteMe/install.py
+# fi
 
-    # Install YouCompleteMe.
-    "${HOME}"/.vim/bundle/YouCompleteMe/install.py
+# Install neovim.
+if [[ ! -d "${HOME}"/.nvim ]]; then
+  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+  mkdir -p "${HOME}"/.nvim
+  tar xzf nvim-linux-x86_64.tar.gz --strip-components=1 -C "${HOME}"/.nvim
+  mkdir -p "${HOME}/.local/bin"
+  ln -s "${HOME}"/.nvim/bin/nvim "${HOME}"/.local/bin/nvim
+  rm -f nvim-linux-x86_64.tar.gz
+
+  # Install lazyvim.
+  git clone https://github.com/LazyVim/starter ~/.config/nvim
 fi
 
 # Install SDKMAN.

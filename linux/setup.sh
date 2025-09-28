@@ -135,6 +135,10 @@ install_rust() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 }
 
+install_uv() {
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+}
+
 GITHUB="${HOME}"/github
 PROJECTS="${HOME}"/projects
 DOT_FILES="${GITHUB}"/dotfiles
@@ -222,6 +226,9 @@ install_rust
 
 # Install Go.
 install_go
+
+# Install uv
+install_uv
 
 # Install Bazel.
 install_bazel
